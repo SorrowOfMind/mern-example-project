@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from 'axios';
 
 class CreateUser extends Component {
     state = {
@@ -9,8 +10,10 @@ class CreateUser extends Component {
     
     handleSubmit = e => {
         e.preventDefault();
-        const newUser = this.state.username;
-        console.log(newUser);
+        const newUser = {username: this.state.username};
+        axios.post('/users/add', newUser)
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err.message));
         this.setState({username: ''})
     }
 

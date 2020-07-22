@@ -1,20 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import DatePicker from 'react-datepicker';
+import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
 
 const CreateExercise = () => {
-    const [exercise,
-        setExercise] = useState({username: '', description: '', duration: 0, date: new Date()});
-    const [users,
-        setUsers] = useState([]);
+    const [exercise, setExercise] = useState({username: '', description: '', duration: 0, date: new Date()});
+    const [users ,setUsers] = useState([]);
 
     useEffect(() => {
-        setUsers(['test user 1', 'test user 2']);
-        setExercise(prevExercise => ({
-            ...prevExercise,
-            username: 'test user 1'
-        }))
-    }, [])
+        fetchUsers();
+    }, []);
+
+    const fetchUsers = () => {
+        axios.get('/users')
+            .then(res => setUsers(res.data))
+            .then(() => setExercise(prevExercise => ({
+                ...prevExercise, username: [users][0].username})))
+            .catch(err => console.log(err.message));
+    }
 
     const handleChange = e => {
         const {value, name} = e.target;
@@ -39,7 +42,9 @@ const CreateExercise = () => {
             duration: exercise.duration,
             date: exercise.date
         }
-        console.log(newExercise);
+        axios.post('/exercises/add', newExercise)
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err.message));
         window.location = '/';
     }
     return (
@@ -49,14 +54,13 @@ const CreateExercise = () => {
                 <div className="form-group">
                     <label>Username :</label>
                     <select
-                        // ref="userInput"
                         required
                         className="form-control"
                         value={exercise.user}
                         name="username"
                         onChange={handleChange}
                         >
-                        {users.map(user => (<option key={user} value={user}>{user}</option>))}
+                        {users && users.map(user => (<option key={user._id} value={user.username}>{user.username}</option>))}
                     </select>
                 </div>
                 <div className="form-group">
