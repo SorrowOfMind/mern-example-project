@@ -4,10 +4,8 @@ import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
 
 const CreateExercise = () => {
-    const [exercise,
-        setExercise] = useState({username: '', description: '', duration: 0, date: new Date()});
-    const [users,
-        setUsers] = useState([]);
+    const [exercise, setExercise] = useState({username: '', description: '', duration: 0, date: new Date()});
+    const [users ,setUsers] = useState([]);
 
     useEffect(() => {
         fetchUsers();
@@ -17,8 +15,7 @@ const CreateExercise = () => {
         axios.get('/users')
             .then(res => setUsers(res.data))
             .then(() => setExercise(prevExercise => ({
-                ...prevExercise, username: [users][0].username}))
-            )
+                ...prevExercise, username: [users][0].username})))
             .catch(err => console.log(err.message));
     }
 
@@ -63,7 +60,7 @@ const CreateExercise = () => {
                         name="username"
                         onChange={handleChange}
                         >
-                        {users && users.map(user => (<option key={user.username} value={user.username}>{user.username}</option>))}
+                        {users && users.map(user => (<option key={user._id} value={user.username}>{user.username}</option>))}
                     </select>
                 </div>
                 <div className="form-group">
