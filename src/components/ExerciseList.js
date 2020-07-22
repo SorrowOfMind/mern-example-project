@@ -19,13 +19,13 @@ class ExerciseList extends Component {
     };
 
     deleteExercise = (id) => {
-        axios.delete(`/${id}`)
+        axios.delete(`/exercises/${id}`)
             .then(res => console.log(res.data))
-            .then(() => this.setState(prevState => ({exercises: prevState.filter(exe => exe._id !== id)})))
+            .then(() => this.setState(prevState => ({exercises: prevState.exercises.filter(exe => exe._id !== id)})))
     }
 
     createExeList = () => {
-        return this.state.exercises.map(exercise => <Exercise exercise={exercise} deleteExecise={this.deleteExercise} key={exercise._id}/>)
+        return this.state.exercises.map(exercise => <Exercise exercise={exercise} deleteExercise={this.deleteExercise} key={exercise._id}/>)
     }
 
     render() {

@@ -15,4 +15,4 @@ const Exercise = ({exercise : {username, description, duration, date, _id}, dele
     )
 }
 
-export default Exercise
+export default Exercise;
